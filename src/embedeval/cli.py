@@ -11,6 +11,8 @@ NLP Embedding Evaluation Tool
 import click
 
 
-@click.command()
+@click.command(name="embedeval")
+@click.version_option()
+@click.help_option("--help", "-h")
 def cli():
     print("NLP Embeddings Evaluation Tool")

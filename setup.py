@@ -103,7 +103,7 @@ setup(
     python_requires=">=3.6.*",
     install_requires=INSTALL_REQUIRES,
     extras_require=EXTRAS_REQUIRES,
-    entry_points={"console_scripts": ["embedeval = embedeval.__main__:cli"]},
+    entry_points={"console_scripts": ["embedeval = embedeval.cli:cli"]},
     keywords=KEYWORDS,
     classifiers=CLASSIFIERS,
 )
