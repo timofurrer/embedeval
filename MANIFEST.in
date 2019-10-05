@@ -9,6 +9,8 @@ graft .github
 include tox.ini .coveragerc
 recursive-include tests *.py
 recursive-include tests *.feature
+recursive-include tests *.sh
+recursive-include tests *.txt
 
 # Documentation
 include docs/Makefile docs/docutils.conf
