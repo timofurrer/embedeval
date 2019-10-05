@@ -15,4 +15,9 @@ import click
 @click.version_option()
 @click.help_option("--help", "-h")
 def cli():
+    """embedeval - NLP Embeddings Evaluation Tool
+
+    Evaluate and generate Reports for your
+    NLP Word Embeddings.
+    """
     print("NLP Embeddings Evaluation Tool")

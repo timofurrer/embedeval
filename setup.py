@@ -43,7 +43,8 @@ CLASSIFIERS = [
 
 #: Holds the runtime requirements for the end user
 INSTALL_REQUIRES = [
-    "click>=7"
+    "click>=7",
+    "numpy"
 ]
 #: Holds runtime requirements and development requirements
 EXTRAS_REQUIRES = {
