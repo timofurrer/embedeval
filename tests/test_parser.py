@@ -15,7 +15,7 @@ import pytest
 import numpy as np
 
 from embedeval.errors import EmbedevalError
-from embedeval.parser import load_word2vec_text_embedding
+from embedeval.parsers.word2vec_simple import load_word2vec_text_embedding
 
 
 def create_tmp_word_embedding(path, embedding_content):

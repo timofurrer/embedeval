@@ -8,25 +8,12 @@ NLP Embedding Evaluation Tool
 :license: MIT, see LICENSE for more details.
 """
 
-from typing import List
-from dataclasses import dataclass
 from pathlib import Path
 
 import numpy as np
 
 from embedeval.errors import EmbedevalError
-
-
-@dataclass
-class WordEmbedding:
-    """Immutable representation of a loaded Word Embedding
-
-    A Word Embedding always consists of a one-dimensional
-    vector of words and a n-dimensional vector representing
-    the position in the vector space for each word.
-    """
-    words: List[str]
-    word_vectors: np.array
+from embedeval.embedding import WordEmbedding
 
 
 def load_word2vec_text_embedding(path: Path) -> WordEmbedding:
@@ -81,6 +68,7 @@ def load_word2vec_text_embedding(path: Path) -> WordEmbedding:
 
             words.append(word)
             word_vectors[word_number] = word_vector
+            print("DONE: ", word_number)
 
         if len(words) < word_size:
             raise EmbedevalError(
@@ -88,4 +76,4 @@ def load_word2vec_text_embedding(path: Path) -> WordEmbedding:
                 f"wasn't matched with a size of {len(words)}"
             )
 
-        return WordEmbedding(words, word_vectors)
+        return WordEmbedding(path, words, word_vectors)

@@ -44,7 +44,8 @@ CLASSIFIERS = [
 #: Holds the runtime requirements for the end user
 INSTALL_REQUIRES = [
     "click>=7",
-    "numpy"
+    "numpy",
+    "gensim"
 ]
 #: Holds runtime requirements and development requirements
 EXTRAS_REQUIRES = {
