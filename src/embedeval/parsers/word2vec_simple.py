@@ -8,6 +8,7 @@ NLP Embedding Evaluation Tool
 :license: MIT, see LICENSE for more details.
 """
 
+from typing import List
 from pathlib import Path
 
 import numpy as np
@@ -16,7 +17,24 @@ from embedeval.errors import EmbedevalError
 from embedeval.embedding import WordEmbedding
 
 
-def load_word2vec_text_embedding(path: Path) -> WordEmbedding:
+class SimpleWordEmbedding(WordEmbedding):
+    """Represents a Simple specific Word Embedding"""
+    def __init__(self, path, word_vectors):
+        self._path = path
+        self.word_vectors = word_vectors
+
+    @property
+    def path(self) -> Path:
+        return self._path
+
+    def get_words(self) -> List[str]:
+        return list(self.word_vectors.keys())
+
+    def get_word_vector(self, word: str) -> np.array:
+        return self.word_vectors[word]
+
+
+def load_embedding(path: Path) -> SimpleWordEmbedding:
     """Load the given Word2Vec Word Embedding
 
     The format for the Embedding expects the n x m matrix size
@@ -48,8 +66,7 @@ def load_word2vec_text_embedding(path: Path) -> WordEmbedding:
                     "Unable to extract N x M Embedding size form the header line"
                 ) from exc
 
-        words = []
-        word_vectors = np.zeros(shape=(word_size, word_vector_size), dtype=np.float32)
+        word_vectors = {}
 
         for word_number, line in enumerate(word2vec_file):
             word, *raw_word_vector = line.split()
@@ -66,14 +83,12 @@ def load_word2vec_text_embedding(path: Path) -> WordEmbedding:
                     f"wasn't matched on line {word_number + 2} with a size of {len(word_vector)}"
                 )
 
-            words.append(word)
-            word_vectors[word_number] = word_vector
-            print("DONE: ", word_number)
+            word_vectors[word] = word_vector
 
-        if len(words) < word_size:
+        if len(word_vectors) < word_size:
             raise EmbedevalError(
                 f"Promised word size {word_size} from header "
-                f"wasn't matched with a size of {len(words)}"
+                f"wasn't matched with a size of {len(word_vectors)}"
             )
 
-        return WordEmbedding(path, words, word_vectors)
+        return SimpleWordEmbedding(path, word_vectors)
