@@ -1,2 +1,3 @@
 # FROM: https://fasttext.cc/docs/en/crawl-vectors.html
 https://dl.fbaipublicfiles.com/fasttext/vectors-crawl/cc.de.300.vec.gz
+https://dl.fbaipublicfiles.com/fasttext/vectors-crawl/cc.de.300.bin.gz

@@ -8,14 +8,33 @@ NLP Embedding Evaluation Tool
 :license: MIT, see LICENSE for more details.
 """
 
+from typing import List
 from pathlib import Path
 
+import numpy as np
 from gensim.models import KeyedVectors
 
 from embedeval.embedding import WordEmbedding
 
 
-def load_word2vec_embedding(path: Path, binary=False) -> WordEmbedding:
+class KeyedVectorsWordEmbedding(WordEmbedding):
+    """Represents a Gensim KeyedVectors specific Word Embedding"""
+    def __init__(self, path, keyed_vectors):
+        self._path = path
+        self.keyed_vectors = keyed_vectors
+
+    @property
+    def path(self) -> Path:
+        return self._path
+
+    def get_words(self) -> List[str]:
+        return list(self.keyed_vectors.vocab.keys())
+
+    def get_word_vector(self, word: str) -> np.array:
+        return self.keyed_vectors.word_vec(word)
+
+
+def load_embedding(path: Path, binary=False) -> KeyedVectorsWordEmbedding:
     """Load the given Word2Vec Word Embedding using gensim
 
     The ``gensim.load_word2vec_format`` function is used to parse
@@ -23,20 +42,6 @@ def load_word2vec_embedding(path: Path, binary=False) -> WordEmbedding:
     The ``gensim.models.keyedvectors.KeyedVectors`` is wrapped in the
     embedeval specific ``WordEmbedding`` object.
     """
-    import time
+    keyed_vectors = KeyedVectors.load_word2vec_format(path, binary=binary)
 
-    s = time.time()
-    word2vec = KeyedVectors.load_word2vec_format(path, binary=binary)
-    print(f"KeyedVectors.load_word2vec_format: {time.time() - s}s")
-
-    # copy data from gensim KeyedVectors to WordEmbedding
-    s = time.time()
-    words = []
-    word_vectors = []
-    for word in word2vec.vocab.keys():
-        words.append(word)
-        word_vectors.append(word2vec.word_vec(word))
-
-    print(f"copying shit: {time.time() - s}s")
-
-    return WordEmbedding(path, words, word_vectors)
+    return KeyedVectorsWordEmbedding(path, keyed_vectors)
