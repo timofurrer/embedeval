@@ -42,6 +42,10 @@ def load_embedding(path: Path, binary=False) -> KeyedVectorsWordEmbedding:
     The ``gensim.models.keyedvectors.KeyedVectors`` is wrapped in the
     embedeval specific ``WordEmbedding`` object.
     """
-    keyed_vectors = KeyedVectors.load_word2vec_format(path, binary=binary)
+    keyed_vectors = KeyedVectors.load_word2vec_format(
+        path,
+        binary=binary,
+        unicode_errors="ignore"
+    )
 
     return KeyedVectorsWordEmbedding(path, keyed_vectors)

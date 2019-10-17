@@ -22,7 +22,7 @@ DOWNLOADED_TEST_DATA = Path(__file__).parent / "data" / "downloads"
 ])
 def test_parser_word2vec_text_benchmark(word2vec_path, benchmark):
     """Test benchmarks for loading word2vec text Embeddings"""
-    benchmark.pedantic(load_embedding, word2vec_path, iterations=1, rounds=1)
+    benchmark.pedantic(load_embedding, args=(word2vec_path,), iterations=1, rounds=1)
 
 
 @pytest.mark.parametrize("word2vec_path", [
@@ -30,4 +30,10 @@ def test_parser_word2vec_text_benchmark(word2vec_path, benchmark):
 ])
 def test_parser_word2vec_bin_benchmark(word2vec_path, benchmark):
     """Test benchmarks for loading word2vec text Embeddings"""
-    benchmark.pedantic(load_embedding, word2vec_path, binary=True, iterations=1, rounds=1)
+    benchmark.pedantic(
+        load_embedding,
+        args=(word2vec_path,),
+        kwargs={"binary": True},
+        iterations=1,
+        rounds=1
+    )
