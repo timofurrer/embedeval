@@ -10,7 +10,7 @@ NLP Embedding Evaluation Tool
 
 import importlib.util
 from pathlib import Path
-from typing import List
+from typing import List, Dict, Any
 
 from embedeval.errors import EmbedevalError
 from embedeval.logger import get_component_logger
@@ -45,7 +45,10 @@ def load_module(path: Path) -> None:
     try:
         spec = importlib.util.spec_from_file_location(module_name, str(path))
         module = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(module)
+        if spec.loader is None:
+            raise EmbedevalError(f"No loader for module {module_name} found")
+
+        spec.loader.exec_module(module)  # type: ignore
     except Exception as exc:
         raise EmbedevalError(
             "Unable to import module '{0}' from '{1}': {2}".format(
@@ -57,7 +60,7 @@ def load_module(path: Path) -> None:
 class TaskRegistry:
     """Registry for all available Tasks"""
     def __init__(self) -> None:
-        self._tasks = {}
+        self._tasks: Dict[str, Any] = {}
 
     def register(self, task_cls) -> None:
         """Register the given Task in the Registry"""

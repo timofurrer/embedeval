@@ -18,7 +18,7 @@ from embedeval.logger import get_component_logger
 logger = get_component_logger("word_analogy_task")
 
 
-class WordAnalogyTask(Task):
+class WordAnalogyTask(Task):  # type: ignore
     """Represents a Word Analogy Task"""
 
     NAME = "word-analogy"

@@ -26,7 +26,7 @@ class Task(ABC):
     """
     #: Holds the name for this Task.
     #:  This name is used for the discovery.
-    NAME: str = None
+    NAME: str = ""
 
     def __init_subclass__(cls, **kwargs):
         """Register subclasses to the Task Registry
