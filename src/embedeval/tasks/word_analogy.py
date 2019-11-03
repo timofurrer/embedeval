@@ -21,7 +21,9 @@ logger = get_component_logger("word_analogy_task")
 class WordAnalogyTask(Task):
     """Represents a Word Analogy Task"""
 
-    def evaluate(self) -> typing.Optional[str]:
+    NAME = "word-analogy"
+
+    def evaluate(self, embedding) -> typing.Optional[str]:
         # define the inputs for the Task
         positives = ["Stark", "Jaime"]
         negatives = ["Eddard"]
@@ -31,7 +33,7 @@ class WordAnalogyTask(Task):
 
         # evaluate most similar word analogies
         most_similar_analogy = dict(
-            self.embedding.keyed_vectors.most_similar_cosmul(  # type: ignore
+            embedding.keyed_vectors.most_similar_cosmul(  # type: ignore
                 positive=positives,
                 negative=negatives
             )
