@@ -19,11 +19,22 @@ using custom intrinsic and extrinsic tasks.
 embedeval is available as `pip` package:
 
 ```bash
-pip install embedeval
+python -m pip install embedeval
 ```
+
 # Getting started
 
-tbd.
+Run the `word-analogy` Task on your Word Embedding:
+
+```bash
+embedeval embedding.vec -t word-analogy
+```
+
+Run the `word-analogy` and `word-similarity` Tasks on your Word Embedding:
+
+```bash
+embedeval embedding.vec -t word-analogy -t word-similarity
+```
 
 # Documentation
 
