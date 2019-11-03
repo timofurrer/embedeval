@@ -17,14 +17,37 @@ from embedeval.logger import logger
 from embedeval.parsers.word2vec_gensim import load_embedding
 from embedeval.tasks.word_analogy import WordAnalogyTask
 
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(
+    level=logging.CRITICAL, format="%(asctime)s - %(name)s [%(levelname)s]: %(message)s"
+)
+
+
+def enable_debug_mode(ctx, param, enabled):
+    """Enable the logging module to log in debug mode
+
+    The logging is enabled if the --debug option
+    is given.
+    """
+    if enabled:
+        logger.setLevel(logging.DEBUG)
+        logger.debug("Enabled debug mode")
+    else:
+        logger.setLevel(logging.ERROR)
 
 
 @click.command(name="embedeval")
 @click.version_option()
 @click.help_option("--help", "-h")
+@click.option(
+    "--debug",
+    "-d",
+    "is_debug_mode",
+    is_flag=True,
+    help="Enable debug mode",
+    callback=enable_debug_mode,
+)
 @click.argument("embedding_path", type=click.Path(exists=True, dir_okay=False))
-def cli(embedding_path):
+def cli(is_debug_mode, embedding_path):
     """embedeval - NLP Embeddings Evaluation Tool
 
     Evaluate and generate Reports for your
