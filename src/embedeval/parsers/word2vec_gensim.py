@@ -18,9 +18,16 @@ from embedeval.embedding import WordEmbedding
 
 
 class KeyedVectorsWordEmbedding(WordEmbedding):
-    """Represents a Gensim KeyedVectors specific Word Embedding"""
+    """Represents a word2vec KeyedVectors specific Word Embedding
+
+    The word2vec file will be parsed by ``gensim``.
+
+    The gensim ``KeyedVectors`` instance is made available
+    in the ``self.keyed_vectors`` attribute.
+    """
     def __init__(self, path, keyed_vectors):
         self._path = path
+        #: Holds the gensim KeyedVectors instance
         self.keyed_vectors = keyed_vectors
 
     @property

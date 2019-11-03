@@ -16,7 +16,7 @@ import numpy as np
 
 
 class WordEmbedding(ABC):
-    """Interface to a loaded immutable Word Embedding
+    """Representation of a loaded immutable Word Embedding
 
     This interface should be implemented to represent
     concrete parsed Word Embeddings of a particular

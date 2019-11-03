@@ -18,7 +18,11 @@ from embedeval.embedding import WordEmbedding
 
 
 class SimpleWordEmbedding(WordEmbedding):
-    """Represents a Simple specific Word Embedding"""
+    """Represents a word2vec specific Word Embedding
+
+    This Word Embedding should only be used for small datasets
+    as it's purely implemented in Python and therefore somewhat slow.
+    """
     def __init__(self, path, word_vectors):
         self._path = path
         self.word_vectors = word_vectors
