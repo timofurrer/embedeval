@@ -10,6 +10,8 @@ NLP Embedding Evaluation Tool
 
 import typing
 
+import colorful as cf
+
 from embedeval.task import Task
 from embedeval.logger import get_component_logger
 
@@ -43,8 +45,8 @@ class WordAnalogyTask(Task):
         logger.debug("Found goal %s with a similarity of %f", goal, most_similar_analogy[goal])
 
         return f"""
-            The Task:
+            {cf.bold}The Task{cf.reset}:
                 {positives[0]} is related to {negatives[0]}, as ??? is related to {positives[-1]}
-            was successful.
-            The Goal of "{goal}" was found with a similarity of {most_similar_analogy[goal]}.
-        """
+            was {cf.underlined}successful{cf.reset}.
+            The Goal of "{goal}" was found with a {cf.bold}similarity of {most_similar_analogy[goal]:.2}{cf.reset}.
+        """  # noqa
