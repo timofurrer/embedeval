@@ -1,3 +1,5 @@
+.. _api:
+
 API
 ===
 
@@ -17,6 +19,8 @@ Embedding.
 
 .. autoclass:: embedeval.embedding.WordEmbedding
    :members:
+
+.. _task_api:
 
 Task API
 --------

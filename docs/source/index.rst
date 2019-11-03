@@ -10,6 +10,7 @@ This part of the documentation guides you through all of embedeval’s usage pat
 .. toctree::
    :maxdepth: 2
 
+   task_tutorial
 
 
 API Reference

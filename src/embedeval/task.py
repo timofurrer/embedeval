@@ -24,8 +24,16 @@ class Task(ABC):
     The Task Evaluation Algorithm must be implemented
     in the ``evaluate()`` method.
     """
+    #: Holds the name for this Task.
+    #:  This name is used for the discovery.
+    NAME: str = None
+
     def __init_subclass__(cls, **kwargs):
-        """Registry subclasses to the Task Registry for later discovery"""
+        """Register subclasses to the Task Registry
+
+        This registration makes it possible
+        to later discover and run the Tasks.
+        """
         super().__init_subclass__(**kwargs)
         task_registry.register(cls)
 
@@ -40,6 +48,7 @@ class Task(ABC):
 
         This measure must be returned as a string from this method.
 
-        It should contain everything needed by the user to verify the Embedding.
+        It should contain everything needed by the user
+        to verify the Embedding.
         """
         ...
