@@ -25,7 +25,7 @@ class OddOneOutTask(Task):  # type: ignore
 
     def evaluate(self, embedding) -> typing.Optional[str]:
         # define the inputs for the Task
-        words = ["Eddard Catelyn Rob Riverrun Sansa"]
+        words = "Eddard Catelyn Rob Riverrun Sansa"
 
         # define the goal for the odd one out function
         goal = "Lannister"
