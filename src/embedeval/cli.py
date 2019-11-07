@@ -103,5 +103,5 @@ def cli(is_debug_mode, embedding_path, tasks_path, tasks):
     for task_nbr, task in enumerate(tasks, start=1):
         logger.debug("Evaluating Task %s ...", task.NAME)
         report = task.evaluate(embedding)
-        print(report)
+        print(report, end="\n\n", flush=True)
         logger.debug("Evaluated %d of %d Tasks", task_nbr, len(tasks))
