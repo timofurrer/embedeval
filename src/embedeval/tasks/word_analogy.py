@@ -48,7 +48,6 @@ class WordAnalogyTask(Task):  # type: ignore
 
             result_list = "\n".join(f"    {k}: {v:.2}" for k, v in most_similar_analogy.items())
 
-
             logger.error("Goal %s not found in most similar word analogies", goal)
             return TaskReport(
                 self.NAME,
