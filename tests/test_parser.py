@@ -12,8 +12,10 @@ import textwrap
 import uuid
 
 import numpy as np
+import pytest
 
-from embedeval.parsers.word2vec_gensim import load_embedding
+from embedeval.parsers.word2vec_gensim import load_embedding as gensim_load_embedding
+from embedeval.parsers.word2vec_simple import load_embedding as simple_load_embedding
 
 
 def create_tmp_word_embedding(path, embedding_content):
@@ -25,7 +27,11 @@ def create_tmp_word_embedding(path, embedding_content):
     return created_file
 
 
-def test_should_parse_word2vec_with_single_entry(tmp_path):
+@pytest.mark.parametrize("load_embedding_func", [
+    pytest.param(simple_load_embedding, id="simple parser"),
+    pytest.param(gensim_load_embedding, id="gensim parser"),
+])
+def test_should_parse_word2vec_with_single_entry(load_embedding_func, tmp_path):
     """Loading a Word2Vec Embedding should pass for single word"""
     # GIVEN
     word2vec_path = create_tmp_word_embedding(
@@ -37,7 +43,7 @@ def test_should_parse_word2vec_with_single_entry(tmp_path):
     )
 
     # WHEN
-    embedding = load_embedding(word2vec_path)
+    embedding = load_embedding_func(word2vec_path)
 
     # THEN
     assert embedding.get_words() == ["word"]
@@ -47,7 +53,11 @@ def test_should_parse_word2vec_with_single_entry(tmp_path):
     )
 
 
-def test_should_parse_word2vec_with_multiple_entires(tmp_path):
+@pytest.mark.parametrize("load_embedding_func", [
+    pytest.param(simple_load_embedding, id="simple parser"),
+    pytest.param(gensim_load_embedding, id="gensim parser"),
+])
+def test_should_parse_word2vec_with_multiple_entires(load_embedding_func, tmp_path):
     """Loading a Word2Vec Embedding should pass for multiple word entries"""
     # GIVEN
     word2vec_path = create_tmp_word_embedding(
@@ -62,7 +72,7 @@ def test_should_parse_word2vec_with_multiple_entires(tmp_path):
     )
 
     # WHEN
-    embedding = load_embedding(word2vec_path)
+    embedding = load_embedding_func(word2vec_path)
 
     # THEN
     assert embedding.get_words() == ["word1", "word2", "word3", "word4"]

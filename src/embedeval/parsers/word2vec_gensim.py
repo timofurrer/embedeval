@@ -32,7 +32,7 @@ class KeyedVectorsWordEmbedding(WordEmbedding):
 
     @property
     def path(self) -> Path:
-        return self._path
+        return self._path  # pragma: no cover
 
     def get_words(self) -> List[str]:
         return list(self.keyed_vectors.vocab.keys())
