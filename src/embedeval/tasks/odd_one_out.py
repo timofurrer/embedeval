@@ -28,7 +28,7 @@ class OddOneOutTask(Task):  # type: ignore
         words = "Eddard Catelyn Rob Riverrun Sansa"
 
         # define the goal for the odd one out function
-        goal = "Lannister"
+        goal = "Riverrun"
 
         # evaluate odd one out
         odd_one_out = embedding.keyed_vectors.doesnt_match(words.split())
