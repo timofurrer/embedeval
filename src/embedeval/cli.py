@@ -8,6 +8,7 @@ NLP Embedding Evaluation Tool
 :license: MIT, see LICENSE for more details.
 """
 
+import sys
 import logging
 from pathlib import Path
 
@@ -20,6 +21,11 @@ from embedeval.taskregistry import registry as task_registry, load_tasks
 logging.basicConfig(
     level=logging.CRITICAL, format="%(asctime)s - %(name)s [%(levelname)s]: %(message)s"
 )
+
+# suppress all warnings when running the application
+if not sys.warnoptions:
+    import warnings
+    warnings.simplefilter("ignore")
 
 #: Holds the path to the tasks directory deployed with embedeval
 __TASKS_DIR__ = Path(__file__).parent / "tasks"
@@ -97,5 +103,5 @@ def cli(is_debug_mode, embedding_path, tasks_path, tasks):
     for task_nbr, task in enumerate(tasks, start=1):
         logger.debug("Evaluating Task %s ...", task.NAME)
         report = task.evaluate(embedding)
-        print(report)
+        print(report, end="\n\n", flush=True)
         logger.debug("Evaluated %d of %d Tasks", task_nbr, len(tasks))
