@@ -12,7 +12,7 @@ from embedeval.tasks.odd_one_out import OddOneOutTask
 from unittest.mock import MagicMock
 
 
-def test_odd_one_out_should_fail_on_wrong_return_string(mocker):
+def test_odd_one_out_should_fail_on_wrong_return_string():
     # GIVEN
     task = OddOneOutTask()
     embedding_mock = MagicMock(name="embedding")
@@ -25,7 +25,7 @@ def test_odd_one_out_should_fail_on_wrong_return_string(mocker):
     assert not report.outcome
 
 
-def test_odd_one_out_should_pass_when_riverrun_is_returned(mocker):
+def test_odd_one_out_should_pass_when_riverrun_is_returned():
     # GIVEN
     task = OddOneOutTask()
     embedding_mock = MagicMock(name="embedding")
