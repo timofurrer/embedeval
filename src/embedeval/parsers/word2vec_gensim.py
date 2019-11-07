@@ -15,6 +15,7 @@ import numpy as np
 from gensim.models import KeyedVectors
 
 from embedeval.embedding import WordEmbedding
+from embedeval.errors import EmbedevalError
 
 
 class KeyedVectorsWordEmbedding(WordEmbedding):
@@ -49,10 +50,15 @@ def load_embedding(path: Path, binary=False) -> KeyedVectorsWordEmbedding:
     The ``gensim.models.keyedvectors.KeyedVectors`` is wrapped in the
     embedeval specific ``WordEmbedding`` object.
     """
-    keyed_vectors = KeyedVectors.load_word2vec_format(
-        path,
-        binary=binary,
-        unicode_errors="ignore"
-    )
+    try:
+        keyed_vectors = KeyedVectors.load_word2vec_format(
+            path,
+            binary=binary,
+            unicode_errors="ignore"
+        )
+    except Exception as exc:
+        raise EmbedevalError(
+            f"Failed to parse Embedding with gensim KeyedVectors: {exc}"
+        )
 
     return KeyedVectorsWordEmbedding(path, keyed_vectors)
