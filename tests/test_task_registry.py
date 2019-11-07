@@ -41,6 +41,25 @@ def test_should_successfully_register_task_with_a_name():
     assert registry.get_task_cls("some-task") is Task
 
 
+def test_should_not_register_task_with_same_name_twice():
+    # GIVEN
+    registry = TaskRegistry()
+
+    class Task:
+        NAME = "some-task"
+
+    class LateTask:
+        NAME = "some-task"
+
+    registry.register(Task)
+
+    # WHEN
+    registry.register(LateTask)
+
+    # THEN
+    assert registry.get_task_cls("some-task") is Task
+
+
 def test_should_fail_to_get_not_existent_task():
     # GIVEN
     registry = TaskRegistry()

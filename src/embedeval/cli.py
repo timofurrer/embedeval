@@ -41,8 +41,13 @@ def enable_debug_mode(ctx, param, enabled):
 
 def create_tasks(ctx, param, task_names):
     """Create the given Tasks"""
+    tasks_paths = [__TASKS_DIR__]
+    if ctx.params["tasks_path"] is not None:
+        logger.debug("Using additional path to load tasks: %s", ctx.params["tasks_path"])
+        tasks_paths.insert(0, Path(ctx.params["tasks_path"]))
+
     # load all tasks deployed with embedeval
-    load_tasks([__TASKS_DIR__])
+    load_tasks(tasks_paths)
 
     # create Tasks with the given Embedding
     tasks = [task_registry.create_task(n) for n in task_names]
@@ -62,6 +67,13 @@ def create_tasks(ctx, param, task_names):
     help="Enable debug mode",
 )
 @click.option(
+    "--tasks-path",
+    "-p",
+    is_eager=True,
+    type=click.Path(exists=True, file_okay=False, resolve_path=True),
+    help="Additional Path where Tasks are loaded from",
+)
+@click.option(
     "--task",
     "-t",
     "tasks",
@@ -70,7 +82,7 @@ def create_tasks(ctx, param, task_names):
     help="The Task to evaluate on the given Embedding (can be specified multiple times)",
 )
 @click.argument("embedding_path", is_eager=True, type=click.Path(exists=True, dir_okay=False))
-def cli(is_debug_mode, embedding_path, tasks):
+def cli(is_debug_mode, embedding_path, tasks_path, tasks):
     """embedeval - NLP Embeddings Evaluation Tool
 
     Evaluate and generate Reports for your
@@ -86,6 +98,7 @@ def cli(is_debug_mode, embedding_path, tasks):
     for task_nbr, task in enumerate(tasks, start=1):
         logger.debug("Evaluating Task %s ...", task.NAME)
         result = task.evaluate(embedding)
-        formatted_result = textwrap.dedent(result).strip()
-        print(formatted_result)
+        if result is not None:
+            formatted_result = textwrap.dedent(result).strip()
+            print(formatted_result)
         logger.debug("Evaluated %d of %d Tasks", task_nbr, len(tasks))

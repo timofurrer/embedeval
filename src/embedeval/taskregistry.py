@@ -72,8 +72,15 @@ class TaskRegistry:
                 f"which is used for discovery"
             )
 
-        self._tasks[task_name] = task_cls
-        logger.debug("Registered Task %s", task_name)
+        if task_name in self._tasks:
+            logger.debug(
+                "Not registering Task %s, "
+                "because one with the same name has already been registered",
+                task_name
+            )
+        else:
+            self._tasks[task_name] = task_cls
+            logger.debug("Registered Task %s", task_name)
 
     def create_task(self, name: str):
         """Create a new Task of the given type"""
