@@ -8,7 +8,7 @@ NLP Embedding Evaluation Tool
 :license: MIT, see LICENSE for more details.
 """
 
-from embedeval.cli import cli
+from embedeval.cli import cli  # pragma: no cover
 
 
 if __name__ == "__main__":

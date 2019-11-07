@@ -51,4 +51,4 @@ class Task(ABC):
         It should contain everything needed by the user
         to verify the Embedding.
         """
-        ...
+        ...  # pragma: no cover

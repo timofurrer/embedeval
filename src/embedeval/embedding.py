@@ -30,14 +30,14 @@ class WordEmbedding(ABC):
     @abstractmethod
     def path(self) -> Path:
         """Get the path to the Word Embedding file"""
-        ...
+        ...  # pragma: no cover
 
     @abstractmethod
     def get_words(self) -> List[str]:
         """Get a list of all words in the Word Embedding"""
-        ...
+        ...  # pragma: no cover
 
     @abstractmethod
     def get_word_vector(self, word: str) -> np.array:
         """Get the word vector for the given word from Word Embedding"""
-        ...
+        ...  # pragma: no cover

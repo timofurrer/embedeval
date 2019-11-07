@@ -46,7 +46,7 @@ def load_module(path: Path) -> None:
         spec = importlib.util.spec_from_file_location(module_name, str(path))
         module = importlib.util.module_from_spec(spec)
         if spec.loader is None:
-            raise EmbedevalError(f"No loader for module {module_name} found")
+            raise EmbedevalError(f"No loader for module {module_name} found")  # pragma: no cover
 
         spec.loader.exec_module(module)  # type: ignore
     except Exception as exc:
