@@ -43,3 +43,17 @@ Embedeval implements parsers for some well-known Word Embedding formats.
 
 .. autoclass:: embedeval.parsers.word2vec_simple.SimpleWordEmbedding
    :members:
+
+
+Top-Level Package Exports
+-------------------------
+
+The ``embedeval`` Python package exports the Task API as top-level names:
+
+.. testcode::
+
+    from embedeval import (
+        Task,
+        TaskReport,
+        EmbedevalError
+    )
