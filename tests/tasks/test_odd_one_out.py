@@ -11,6 +11,7 @@ NLP Embedding Evaluation Tool
 from embedeval.tasks.odd_one_out import OddOneOutTask
 from unittest.mock import MagicMock
 
+
 def test_odd_one_out_should_fail_on_wrong_return_string(mocker):
     # GIVEN
     task = OddOneOutTask()
@@ -22,6 +23,7 @@ def test_odd_one_out_should_fail_on_wrong_return_string(mocker):
 
     # THEN
     assert result is None
+
 
 def test_odd_one_out_should_pass_when_riverrun_is_returned(mocker):
     # GIVEN
