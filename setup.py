@@ -103,7 +103,7 @@ setup(
     packages=PACKAGES,
     package_dir={"": "src"},
     include_package_data=True,
-    python_requires=">=3.6.*",
+    python_requires=">=3.7.*",
     install_requires=INSTALL_REQUIRES,
     extras_require=EXTRAS_REQUIRES,
     entry_points={"console_scripts": ["embedeval = embedeval.cli:cli"]},
