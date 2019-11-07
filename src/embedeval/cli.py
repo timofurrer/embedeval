@@ -8,8 +8,8 @@ NLP Embedding Evaluation Tool
 :license: MIT, see LICENSE for more details.
 """
 
-import sys
 import logging
+import warnings
 from pathlib import Path
 
 import click
@@ -23,9 +23,7 @@ logging.basicConfig(
 )
 
 # suppress all warnings when running the application
-if not sys.warnoptions:
-    import warnings
-    warnings.simplefilter("ignore")
+warnings.simplefilter("ignore")
 
 #: Holds the path to the tasks directory deployed with embedeval
 __TASKS_DIR__ = Path(__file__).parent / "tasks"
