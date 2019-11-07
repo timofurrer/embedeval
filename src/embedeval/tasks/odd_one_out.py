@@ -36,7 +36,7 @@ class OddOneOutTask(Task):  # type: ignore
         # evaluate
         if goal != odd_one_out:
             logger.error("Goal %s was not found to be the odd one out, "
-                "instead it was %s", goal, odd_one_out)
+                         "instead it was %s", goal, odd_one_out)
             return None
 
         logger.debug("Found goal %s as the odd one out", odd_one_out)
