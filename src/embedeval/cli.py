@@ -99,9 +99,9 @@ def cli(is_debug_mode, embedding_path, tasks_path, tasks):
     NLP Word Embeddings.
     """
     # load the Word Embedding
-    logger.debug("Loading embedding %s", embedding_path)
+    print(cf.italic(f"Loading embedding {embedding_path} ..."), flush=True, end=" ")
     embedding = load_embedding(embedding_path, binary=True)
-    logger.debug("Loaded embedding %s", embedding_path)
+    print(cf.bold("[OK]"), flush=True, end="\n\n")
 
     # evaluate all tasks
     logger.debug("Evaluating %d Tasks ...", len(tasks))
