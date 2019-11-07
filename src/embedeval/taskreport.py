@@ -14,7 +14,7 @@ from dataclasses import dataclass
 import colorful as cf
 
 
-@dataclass
+@dataclass(frozen=True)
 class TaskReport:
     """Represents an evaluation report of a Task"""
     #: Holds the name of the Task
