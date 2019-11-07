@@ -13,3 +13,6 @@ __version__ = "0.1.0"
 
 
 # Expose useful objects on package level
+from embedeval.task import Task  # noqa
+from embedeval.taskreport import TaskReport  # noqa
+from embedeval.errors import EmbedevalError  # noqa
