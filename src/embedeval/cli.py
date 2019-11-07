@@ -8,7 +8,6 @@ NLP Embedding Evaluation Tool
 :license: MIT, see LICENSE for more details.
 """
 
-import textwrap
 import logging
 from pathlib import Path
 
@@ -97,8 +96,6 @@ def cli(is_debug_mode, embedding_path, tasks_path, tasks):
     logger.debug("Evaluating %d Tasks ...", len(tasks))
     for task_nbr, task in enumerate(tasks, start=1):
         logger.debug("Evaluating Task %s ...", task.NAME)
-        result = task.evaluate(embedding)
-        if result is not None:
-            formatted_result = textwrap.dedent(result).strip()
-            print(formatted_result)
+        report = task.evaluate(embedding)
+        print(report)
         logger.debug("Evaluated %d of %d Tasks", task_nbr, len(tasks))

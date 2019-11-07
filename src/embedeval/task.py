@@ -8,9 +8,9 @@ NLP Embedding Evaluation Tool
 :license: MIT, see LICENSE for more details.
 """
 
-import typing
 from abc import ABC, abstractmethod
 
+from embedeval.taskreport import TaskReport
 from embedeval.taskregistry import registry as task_registry
 from embedeval.embedding import WordEmbedding
 
@@ -38,7 +38,7 @@ class Task(ABC):
         task_registry.register(cls)
 
     @abstractmethod
-    def evaluate(self, embedding: WordEmbedding) -> typing.Optional[str]:
+    def evaluate(self, embedding: WordEmbedding) -> TaskReport:
         """Evaluate this Task on the given Word Embedding
 
         The evaluation algorithm should always produce some kind of
