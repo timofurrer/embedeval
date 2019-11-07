@@ -8,15 +8,18 @@ NLP Embedding Evaluation Tool
 :license: MIT, see LICENSE for more details.
 """
 
+import sys
 import logging
 import warnings
 from pathlib import Path
 
 import click
+import colorful as cf
 
 from embedeval.logger import logger
 from embedeval.parsers.word2vec_gensim import load_embedding
 from embedeval.taskregistry import registry as task_registry, load_tasks
+from embedeval.errors import EmbedevalError
 
 logging.basicConfig(
     level=logging.CRITICAL, format="%(asctime)s - %(name)s [%(levelname)s]: %(message)s"
@@ -53,7 +56,11 @@ def create_tasks(ctx, param, task_names):
     load_tasks(tasks_paths)
 
     # create Tasks with the given Embedding
-    tasks = [task_registry.create_task(n) for n in task_names]
+    try:
+        tasks = [task_registry.create_task(n) for n in task_names]
+    except EmbedevalError as exc:
+        print(f"{cf.bold_firebrick('Error:')} {cf.firebrick(exc)}", file=sys.stderr)
+        raise click.Abort()
     return tasks
 
 
