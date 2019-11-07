@@ -34,7 +34,7 @@ class OddOneOutTask(Task):  # type: ignore
         odd_one_out = embedding.keyed_vectors.doesnt_match(words.split())
 
         # evaluate
-        if goal not == odd_one_out:
+        if goal != odd_one_out:
             logger.error("Goal %s was not found to be the odd one out, instead it was %s", goal, odd_one_out)
             return None
 
