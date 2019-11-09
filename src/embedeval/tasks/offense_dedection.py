@@ -11,13 +11,13 @@ NLP Embedding Evaluation Tool
 from embedeval.task import Task, TaskReport
 from embedeval.logger import get_component_logger
 
-logger = get_component_logger("offense_dedection")
+logger = get_component_logger("offense_detection")
 
 
-class OffenseDedectionTask(Task):  # type: ignore
-    """Represents an Offense dedection Task"""
+class OffenseDetectionTask(Task):  # type: ignore
+    """Represents an Offense detection Task"""
 
-    NAME = "offense-dedection"
+    NAME = "offense-detection"
 
     def evaluate(self, embedding) -> TaskReport:
         # define the minimum score to pass the Task
@@ -26,7 +26,7 @@ class OffenseDedectionTask(Task):  # type: ignore
 
         # define the title for the report
         report_title = (
-            f"Dedect if the defined Tweets are offensive or not."
+            f"Detect if the defined Tweets are offensive or not."
         )
 
         # create model
