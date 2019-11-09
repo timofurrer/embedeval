@@ -26,6 +26,9 @@ recursive-include docs *.ico
 recursive-include docs *.bat
 prune docs/build
 
+# Notebooks
+prune notebooks
+
 # Just to keep check-manifest happy; on releases those files are gone.
 # Last rule wins!
 exclude changelog.d/*.rst

@@ -42,20 +42,19 @@ CLASSIFIERS = [
 ]
 
 #: Holds the runtime requirements for the end user
-INSTALL_REQUIRES = [
-    "click>=7",
-    "numpy",
-    "gensim",
-    "colorful"
-]
+INSTALL_REQUIRES = ["click>=7", "numpy", "gensim", "colorful"]
 #: Holds runtime requirements and development requirements
 EXTRAS_REQUIRES = {
     # extras for contributors
     "docs": ["sphinx"],
     "tests": ["coverage", "pytest", "pytest-mock", "pytest-benchmark"],
+    "notebooks": ["jupyter", "matplotlib", "pandas", "keras", "tensorflow", "nltk"],
 }
 EXTRAS_REQUIRES["dev"] = (
-    EXTRAS_REQUIRES["tests"] + EXTRAS_REQUIRES["docs"] + ["pre-commit"]
+    EXTRAS_REQUIRES["tests"]
+    + EXTRAS_REQUIRES["docs"]
+    + EXTRAS_REQUIRES["notebooks"]
+    + ["pre-commit"]
 )
 
 #: Holds the contents of the README file
