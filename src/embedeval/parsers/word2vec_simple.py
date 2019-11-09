@@ -23,6 +23,7 @@ class SimpleWordEmbedding(WordEmbedding):
     This Word Embedding should only be used for small datasets
     as it's purely implemented in Python and therefore somewhat slow.
     """
+
     def __init__(self, path, word_vectors):
         self._path = path
         self.word_vectors = word_vectors
@@ -75,11 +76,7 @@ def load_embedding(path: Path) -> SimpleWordEmbedding:
         for word_number, line in enumerate(word2vec_file):
             word, *raw_word_vector = line.split()
 
-            word_vector = [
-                np.float32(x)
-                for x
-                in raw_word_vector
-            ]
+            word_vector = [np.float32(x) for x in raw_word_vector]
 
             if len(word_vector) != word_vector_size:
                 raise EmbedevalError(

@@ -24,6 +24,7 @@ class Task(ABC):
     The Task Evaluation Algorithm must be implemented
     in the ``evaluate()`` method.
     """
+
     #: Holds the name for this Task.
     #:  This name is used for the discovery.
     NAME: str = ""

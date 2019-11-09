@@ -27,10 +27,13 @@ def create_tmp_word_embedding(path, embedding_content):
     return created_file
 
 
-@pytest.mark.parametrize("load_embedding_func", [
-    pytest.param(simple_load_embedding, id="simple parser"),
-    pytest.param(gensim_load_embedding, id="gensim parser"),
-])
+@pytest.mark.parametrize(
+    "load_embedding_func",
+    [
+        pytest.param(simple_load_embedding, id="simple parser"),
+        pytest.param(gensim_load_embedding, id="gensim parser"),
+    ],
+)
 def test_should_parse_word2vec_with_single_entry(load_embedding_func, tmp_path):
     """Loading a Word2Vec Embedding should pass for single word"""
     # GIVEN
@@ -39,7 +42,7 @@ def test_should_parse_word2vec_with_single_entry(load_embedding_func, tmp_path):
         """
             1 2
             word 1.0 2.0
-        """
+        """,
     )
 
     # WHEN
@@ -47,16 +50,16 @@ def test_should_parse_word2vec_with_single_entry(load_embedding_func, tmp_path):
 
     # THEN
     assert embedding.get_words() == ["word"]
-    assert np.array_equal(
-        embedding.get_word_vector("word"),
-        np.array([1.0, 2.0])
-    )
+    assert np.array_equal(embedding.get_word_vector("word"), np.array([1.0, 2.0]))
 
 
-@pytest.mark.parametrize("load_embedding_func", [
-    pytest.param(simple_load_embedding, id="simple parser"),
-    pytest.param(gensim_load_embedding, id="gensim parser"),
-])
+@pytest.mark.parametrize(
+    "load_embedding_func",
+    [
+        pytest.param(simple_load_embedding, id="simple parser"),
+        pytest.param(gensim_load_embedding, id="gensim parser"),
+    ],
+)
 def test_should_parse_word2vec_with_multiple_entires(load_embedding_func, tmp_path):
     """Loading a Word2Vec Embedding should pass for multiple word entries"""
     # GIVEN
@@ -68,7 +71,7 @@ def test_should_parse_word2vec_with_multiple_entires(load_embedding_func, tmp_pa
             word2 3.0 4.0
             word3 5.0 6.0
             word4 7.0 8.0
-        """
+        """,
     )
 
     # WHEN
@@ -76,15 +79,7 @@ def test_should_parse_word2vec_with_multiple_entires(load_embedding_func, tmp_pa
 
     # THEN
     assert embedding.get_words() == ["word1", "word2", "word3", "word4"]
-    assert np.array_equal(
-        embedding.get_word_vector("word1"), np.array([1.0, 2.0])
-    )
-    assert np.array_equal(
-        embedding.get_word_vector("word2"), np.array([3.0, 4.0])
-    )
-    assert np.array_equal(
-        embedding.get_word_vector("word3"), np.array([5.0, 6.0])
-    )
-    assert np.array_equal(
-        embedding.get_word_vector("word4"), np.array([7.0, 8.0])
-    )
+    assert np.array_equal(embedding.get_word_vector("word1"), np.array([1.0, 2.0]))
+    assert np.array_equal(embedding.get_word_vector("word2"), np.array([3.0, 4.0]))
+    assert np.array_equal(embedding.get_word_vector("word3"), np.array([5.0, 6.0]))
+    assert np.array_equal(embedding.get_word_vector("word4"), np.array([7.0, 8.0]))

@@ -17,6 +17,7 @@ import colorful as cf
 @dataclass(frozen=True)
 class TaskReport:
     """Represents an evaluation report of a Task"""
+
     #: Holds the name of the Task
     name: str
     #: Holds the outcome of the Task
@@ -29,7 +30,9 @@ class TaskReport:
     def __str__(self):
         """Format the Report for the console output"""
 
-        formatted_outcome = cf.forestGreen("passed") if self.outcome else cf.firebrick("failed")
+        formatted_outcome = (
+            cf.forestGreen("passed") if self.outcome else cf.firebrick("failed")
+        )
 
         formatted_title = "\n".join(" " * 16 + l for l in self.title.split("\n"))
         formatted_body = "\n".join(" " * 16 + l for l in self.body.split("\n"))

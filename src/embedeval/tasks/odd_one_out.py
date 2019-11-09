@@ -28,8 +28,7 @@ class OddOneOutTask(Task):  # type: ignore
 
         # define the title for the report
         report_title = (
-            f"Which of the following words is the odd one out?\n"
-            f"    {words}"
+            f"Which of the following words is the odd one out?\n" f"    {words}"
         )
 
         # evaluate odd one out
@@ -38,10 +37,9 @@ class OddOneOutTask(Task):  # type: ignore
         # evaluate
         if goal != odd_one_out:
             logger.error(
-                "Goal %s was not found to be the odd one out, "
-                "instead it was %s",
+                "Goal %s was not found to be the odd one out, " "instead it was %s",
                 goal,
-                odd_one_out
+                odd_one_out,
             )
             return TaskReport(
                 self.NAME,
@@ -50,7 +48,7 @@ class OddOneOutTask(Task):  # type: ignore
                 body=(
                     f"The goal '{goal}' was not found, "
                     f"instead '{odd_one_out}' was found"
-                )
+                ),
             )
 
         logger.debug("Found goal %s as the odd one out", odd_one_out)
@@ -59,5 +57,5 @@ class OddOneOutTask(Task):  # type: ignore
             self.NAME,
             outcome=True,
             title=report_title,
-            body=f"The goal '{goal}' was found"
+            body=f"The goal '{goal}' was found",
         )

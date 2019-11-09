@@ -70,7 +70,9 @@ def test_should_fail_to_get_not_existent_task():
     registry.register(Task)
 
     # THEN
-    with pytest.raises(EmbedevalError, match="No Task with name 'other-task' registered"):
+    with pytest.raises(
+        EmbedevalError, match="No Task with name 'other-task' registered"
+    ):
         # WHEN
         registry.get_task_cls("other-task")
 
@@ -127,6 +129,8 @@ def test_should_fail_task_loading_when_import_fails(mocker):
     location.stem = "foo"
 
     # THEN
-    with pytest.raises(EmbedevalError, match="Unable to import module 'foo' .*: buuhu!"):
+    with pytest.raises(
+        EmbedevalError, match="Unable to import module 'foo' .*: buuhu!"
+    ):
         # WHEN
         load_module(location)

@@ -26,6 +26,7 @@ class KeyedVectorsWordEmbedding(WordEmbedding):
     The gensim ``KeyedVectors`` instance is made available
     in the ``self.keyed_vectors`` attribute.
     """
+
     def __init__(self, path, keyed_vectors):
         self._path = path
         #: Holds the gensim KeyedVectors instance
@@ -52,9 +53,7 @@ def load_embedding(path: Path, binary=False) -> KeyedVectorsWordEmbedding:
     """
     try:
         keyed_vectors = KeyedVectors.load_word2vec_format(
-            path,
-            binary=binary,
-            unicode_errors="ignore"
+            path, binary=binary, unicode_errors="ignore"
         )
     except Exception as exc:
         raise EmbedevalError(

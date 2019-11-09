@@ -30,12 +30,7 @@ def test_taskreport_should_default_initialize_as_failed():
 
 def test_taskreport_should_be_able_to_access_all_members():
     # GIVEN
-    report = TaskReport(
-        "name",
-        outcome=False,
-        title="title",
-        body="body"
-    )
+    report = TaskReport("name", outcome=False, title="title", body="body")
 
     # THEN
     assert report.name == "name"
@@ -46,20 +41,17 @@ def test_taskreport_should_be_able_to_access_all_members():
 
 def test_taskreport_should_be_formatted_in_str():
     # GIVEN
-    report = TaskReport(
-        "name",
-        outcome=False,
-        title="title",
-        body="body"
-    )
+    report = TaskReport("name", outcome=False, title="title", body="body")
 
     # WHEN
     str_report = str(report)
 
     # THEN
-    assert str_report == ("""
+    assert str_report == (
+        """
 The Task name failed:
     title
 Details:
     body
-    """.strip())
+    """.strip()
+    )

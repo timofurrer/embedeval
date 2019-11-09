@@ -62,18 +62,25 @@ def test_cli_should_load_tasks_from_default_location(existing_embed_file, mocker
     load_tasks_mock.assert_called_once_with([expected_default_path])
 
 
-def test_cli_should_load_additional_tasks_dir_prior_to_default(existing_embed_file, tmpdir, mocker):
+def test_cli_should_load_additional_tasks_dir_prior_to_default(
+    existing_embed_file, tmpdir, mocker
+):
     # GIVEN
     runner = CliRunner()
     load_tasks_mock = mocker.patch("embedeval.cli.load_tasks")
     given_additional_tasks_dir = Path(str(tmpdir))
 
     # WHEN
-    runner.invoke(cli, [
-        existing_embed_file,
-        "--tasks-path", str(given_additional_tasks_dir),
-        "--task", "foo"
-    ])
+    runner.invoke(
+        cli,
+        [
+            existing_embed_file,
+            "--tasks-path",
+            str(given_additional_tasks_dir),
+            "--task",
+            "foo",
+        ],
+    )
 
     # THEN
     load_tasks_mock.assert_called_once_with([given_additional_tasks_dir, mocker.ANY])
@@ -83,7 +90,9 @@ def test_cli_should_create_given_single_task(existing_embed_file, mocker):
     # GIVEN
     runner = CliRunner()
     mocker.patch("embedeval.cli.load_tasks")
-    taskregistry_create_task_mock = mocker.patch("embedeval.cli.task_registry.create_task")
+    taskregistry_create_task_mock = mocker.patch(
+        "embedeval.cli.task_registry.create_task"
+    )
 
     # WHEN
     runner.invoke(cli, [existing_embed_file, "--task", "foo"])
@@ -96,14 +105,16 @@ def test_cli_should_create_all_given_tasks(existing_embed_file, mocker):
     # GIVEN
     runner = CliRunner()
     mocker.patch("embedeval.cli.load_tasks")
-    taskregistry_create_task_mock = mocker.patch("embedeval.cli.task_registry.create_task")
+    taskregistry_create_task_mock = mocker.patch(
+        "embedeval.cli.task_registry.create_task"
+    )
 
     # WHEN
-    runner.invoke(cli, [existing_embed_file, "--task", "foo", "--task", "bar", "--task", "meh"])
+    runner.invoke(
+        cli, [existing_embed_file, "--task", "foo", "--task", "bar", "--task", "meh"]
+    )
 
     # THEN
-    taskregistry_create_task_mock.assert_has_calls([
-        mocker.call("foo"),
-        mocker.call("bar"),
-        mocker.call("meh")
-    ])
+    taskregistry_create_task_mock.assert_has_calls(
+        [mocker.call("foo"), mocker.call("bar"), mocker.call("meh")]
+    )

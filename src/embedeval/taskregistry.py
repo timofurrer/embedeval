@@ -46,7 +46,9 @@ def load_module(path: Path) -> None:
         spec = importlib.util.spec_from_file_location(module_name, str(path))
         module = importlib.util.module_from_spec(spec)
         if spec.loader is None:
-            raise EmbedevalError(f"No loader for module {module_name} found")  # pragma: no cover
+            raise EmbedevalError(
+                f"No loader for module {module_name} found"
+            )  # pragma: no cover
 
         spec.loader.exec_module(module)  # type: ignore
     except Exception as exc:
@@ -59,6 +61,7 @@ def load_module(path: Path) -> None:
 
 class TaskRegistry:
     """Registry for all available Tasks"""
+
     def __init__(self) -> None:
         self._tasks: Dict[str, Any] = {}
 
@@ -76,7 +79,7 @@ class TaskRegistry:
             logger.debug(
                 "Not registering Task %s, "
                 "because one with the same name has already been registered",
-                task_name
+                task_name,
             )
         else:
             self._tasks[task_name] = task_cls

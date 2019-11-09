@@ -49,7 +49,9 @@ def create_tasks(ctx, param, task_names):
     """Create the given Tasks"""
     tasks_paths = [__TASKS_DIR__]
     if ctx.params["tasks_path"] is not None:
-        logger.debug("Using additional path to load tasks: %s", ctx.params["tasks_path"])
+        logger.debug(
+            "Using additional path to load tasks: %s", ctx.params["tasks_path"]
+        )
         tasks_paths.insert(0, Path(ctx.params["tasks_path"]))
 
     # load all tasks deployed with embedeval
@@ -91,7 +93,9 @@ def create_tasks(ctx, param, task_names):
     callback=create_tasks,
     help="The Task to evaluate on the given Embedding (can be specified multiple times)",
 )
-@click.argument("embedding_path", is_eager=True, type=click.Path(exists=True, dir_okay=False))
+@click.argument(
+    "embedding_path", is_eager=True, type=click.Path(exists=True, dir_okay=False)
+)
 def cli(is_debug_mode, embedding_path, tasks_path, tasks):
     """embedeval - NLP Embeddings Evaluation Tool
 

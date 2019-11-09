@@ -26,6 +26,7 @@ class WordEmbedding(ABC):
     vector of words and a n-dimensional vector representing
     the position in the vector space for each word.
     """
+
     @property
     @abstractmethod
     def path(self) -> Path:

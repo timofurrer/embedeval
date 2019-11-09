@@ -42,13 +42,30 @@ CLASSIFIERS = [
 ]
 
 #: Holds the runtime requirements for the end user
-INSTALL_REQUIRES = ["click>=7", "numpy", "gensim", "colorful"]
+INSTALL_REQUIRES = [
+    "click>=7",
+    "colorful",
+    "numpy",
+    "pandas",
+    "gensim",
+    "keras",
+    "tensorflow",
+    "nltk",
+]
 #: Holds runtime requirements and development requirements
 EXTRAS_REQUIRES = {
     # extras for contributors
     "docs": ["sphinx"],
     "tests": ["coverage", "pytest", "pytest-mock", "pytest-benchmark"],
-    "notebooks": ["jupyter", "matplotlib", "seaborn", "pandas", "keras", "tensorflow", "nltk"],
+    "notebooks": [
+        "jupyter",
+        "matplotlib",
+        "seaborn",
+        "pandas",
+        "keras",
+        "tensorflow",
+        "nltk",
+    ],
 }
 EXTRAS_REQUIRES["dev"] = (
     EXTRAS_REQUIRES["tests"]

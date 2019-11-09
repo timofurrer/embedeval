@@ -19,7 +19,7 @@ def test_word_analogy_should_fail_on_wrong_return_string():
     embedding_mock.keyed_vectors.most_similar_cosmul.return_value = {
         "some": 0.89,
         "thing": 0.45,
-        "else": 0.43
+        "else": 0.43,
     }
 
     # WHEN
@@ -36,7 +36,7 @@ def test_word_analogy_should_pass_when_lannister_is_returned():
     embedding_mock.keyed_vectors.most_similar_cosmul.return_value = {
         "some": 0.89,
         "Lannister": 0.45,
-        "else": 0.43
+        "else": 0.43,
     }
 
     # WHEN
