@@ -1,5 +1,5 @@
 # Additional package data
-recursive-include src/embedeval *.g
+recursive-include src\embedeval\tasks\data *.txt
 
 # Metadata
 include LICENSE *.md *.rst *.toml *.yml *.yaml
