@@ -105,7 +105,7 @@ def cli(is_debug_mode, embedding_path, tasks_path, tasks):
     # load the Word Embedding
     print(cf.italic(f"Loading embedding {embedding_path} ..."), flush=True, end=" ")
     try:
-        embedding = load_embedding(embedding_path, binary=True)
+        embedding = load_embedding(embedding_path, binary=False)
     except EmbedevalError as exc:
         print(cf.bold_firebrick("[FAILED]"), flush=True, end="\n\n")
         print(f"{cf.bold_firebrick('Error:')} {cf.firebrick(exc)}", file=sys.stderr)

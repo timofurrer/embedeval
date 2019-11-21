@@ -12,18 +12,42 @@ import re
 from pathlib import Path
 
 import numpy as np
+from keras import backend as K
 from keras.layers import Dense, Flatten
 from keras.layers.embeddings import Embedding
 from keras.models import Sequential
 from keras.preprocessing.sequence import pad_sequences
 from keras.preprocessing.text import Tokenizer
-
 import pandas as pd
-from embedeval.logger import get_component_logger
-from embedeval.task import Task, TaskReport
 from nltk.tokenize import word_tokenize
 
+from embedeval.logger import get_component_logger
+from embedeval.task import Task, TaskReport
+
 logger = get_component_logger("offense_detection")
+
+
+def recall_metric(y_true, y_pred):
+    """Calculate the Recall from a keras batch"""
+    true_positives = K.sum(K.round(K.clip(y_true * y_pred, 0, 1)))
+    possible_positives = K.sum(K.round(K.clip(y_true, 0, 1)))
+    recall = true_positives / (possible_positives + K.epsilon())
+    return recall
+
+
+def precision_metric(y_true, y_pred):
+    """Calculate the Precision from a keras batch"""
+    true_positives = K.sum(K.round(K.clip(y_true * y_pred, 0, 1)))
+    predicted_positives = K.sum(K.round(K.clip(y_pred, 0, 1)))
+    precision = true_positives / (predicted_positives + K.epsilon())
+    return precision
+
+
+def f1_metric(y_true, y_pred):
+    """Calculate the F1 score from a keras batch"""
+    precision = precision_metric(y_true, y_pred)
+    recall = recall_metric(y_true, y_pred)
+    return 2 * ((precision * recall) / (precision + recall + K.epsilon()))
 
 
 class OffenseDetectionTask(Task):  # type: ignore
@@ -96,8 +120,8 @@ class OffenseDetectionTask(Task):  # type: ignore
 
     def evaluate(self, embedding) -> TaskReport:
         # define the minimum score to pass the Task
-        goal_f2_score = 0.75
-        goal_accuracy = 0.75
+        goal_f1_score = 0.75
+        goal_accuracy = 0.70
 
         # define the title for the report
         report_title = f"Detect if the defined Tweets are offensive or not."
@@ -113,27 +137,27 @@ class OffenseDetectionTask(Task):  # type: ignore
         model.fit(
             self.train_corpus,
             self.train_dataset[self.SENTIMENT_COLUMN_NAME],
+            validation_split=0.3,
             epochs=5,
             verbose=model_verbosity,
         )
 
         # evaluate model
-        actual_loess, actual_accuracy = model.evaluate(
+        actual_loess, actual_accuracy, actual_f1_score = model.evaluate(
             self.test_corpus,
             self.test_dataset[self.SENTIMENT_COLUMN_NAME],
             verbose=model_verbosity,
         )
-        actual_f2_score = 0.77823
 
-        if goal_accuracy > actual_accuracy or goal_f2_score > actual_f2_score:
+        if goal_accuracy > actual_accuracy or goal_f1_score > actual_f1_score:
             logger.error(
                 "The prediction of the model was not good enough. "
-                "The Goal of %.3f accuracy and %.3f F2 score was not reached, "
-                "the actual accuracy was %.3f and F2 was %.3f",
+                "The Goal of %.3f accuracy and %.3f F1 score was not reached, "
+                "the actual accuracy was %.3f and F1 was %.3f",
                 goal_accuracy,
-                goal_f2_score,
+                goal_f1_score,
                 actual_accuracy,
-                actual_f2_score,
+                actual_f1_score,
             )
             return TaskReport(
                 self.NAME,
@@ -141,15 +165,15 @@ class OffenseDetectionTask(Task):  # type: ignore
                 title=report_title,
                 body=(
                     f"""The prediction of the model was not good enough.
-The goal of {goal_accuracy:.2} accuracy and {goal_f2_score:.2} F2 score was not reached.
-The actual accuracy was {actual_accuracy:.2} and F2 score was {actual_f2_score:.2}."""
+The goal of {goal_accuracy:.2} accuracy and {goal_f1_score:.2} F1 score was not reached.
+The actual accuracy was {actual_accuracy:.2} and F1 score was {actual_f1_score:.2}."""
                 ),
             )
 
         logger.debug(
-            "The accuracy of the prediction was %.3f and the F2 score was %.3f",
+            "The accuracy of the prediction was %.3f and the F1 score was %.3f",
             actual_accuracy,
-            actual_f2_score,
+            actual_f1_score,
         )
 
         return TaskReport(
@@ -158,8 +182,8 @@ The actual accuracy was {actual_accuracy:.2} and F2 score was {actual_f2_score:.
             title=report_title,
             body=(
                 f"""The prediction of the model was accurate {actual_accuracy:.2%} of the time.
-The goal of minimum {goal_accuracy:.2} accuracy and {goal_f2_score:.2} F2 score was reached.
-The actual accuracy was {actual_accuracy:.2} and F2 score was {actual_f2_score:.2}."""
+The goal of minimum {goal_accuracy:.2} accuracy and {goal_f1_score:.2} F1 score was reached.
+The actual accuracy was {actual_accuracy:.2} and F1 score was {actual_f1_score:.2}."""
             ),
         )
 
@@ -179,7 +203,7 @@ The actual accuracy was {actual_accuracy:.2} and F2 score was {actual_f2_score:.
         model.add(Flatten())
         model.add(Dense(1, activation="sigmoid"))
 
-        model.compile(optimizer="adam", loss="binary_crossentropy", metrics=["acc"])
+        model.compile(optimizer="adam", loss="binary_crossentropy", metrics=["acc", f1_metric])
 
         return model
 
