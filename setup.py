@@ -57,15 +57,7 @@ EXTRAS_REQUIRES = {
     # extras for contributors
     "docs": ["sphinx"],
     "tests": ["coverage", "pytest", "pytest-mock", "pytest-benchmark"],
-    "notebooks": [
-        "jupyter",
-        "matplotlib",
-        "seaborn",
-        "pandas",
-        "keras",
-        "tensorflow",
-        "nltk",
-    ],
+    "notebooks": ["jupyter", "matplotlib", "seaborn",],
 }
 EXTRAS_REQUIRES["dev"] = (
     EXTRAS_REQUIRES["tests"]

@@ -9,7 +9,7 @@ NLP Embedding Evaluation Tool
 """
 
 from abc import ABC, abstractmethod
-from typing import List
+from typing import List, Tuple
 from pathlib import Path
 
 import numpy as np
@@ -31,6 +31,16 @@ class WordEmbedding(ABC):
     @abstractmethod
     def path(self) -> Path:
         """Get the path to the Word Embedding file"""
+        ...  # pragma: no cover
+
+    @property
+    @abstractmethod
+    def shape(self) -> Tuple[int, int]:
+        """Get the shape of the Embedding.
+
+        The first value in the tuple is the amount of words
+        and the second value the vector size of each word.
+        """
         ...  # pragma: no cover
 
     @abstractmethod

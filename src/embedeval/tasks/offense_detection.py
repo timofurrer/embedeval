@@ -203,7 +203,9 @@ The actual accuracy was {actual_accuracy:.2} and F1 score was {actual_f1_score:.
         model.add(Flatten())
         model.add(Dense(1, activation="sigmoid"))
 
-        model.compile(optimizer="adam", loss="binary_crossentropy", metrics=["acc", f1_metric])
+        model.compile(
+            optimizer="adam", loss="binary_crossentropy", metrics=["acc", f1_metric]
+        )
 
         return model
 
@@ -211,7 +213,7 @@ The actual accuracy was {actual_accuracy:.2} and F1 score was {actual_f1_score:.
         # Get the Vocabulary length and add 1 for all unknown words
         vocab_length = len(tokenizer.word_index) + 1
 
-        embedding_matrix = np.zeros((vocab_length, 300))
+        embedding_matrix = np.zeros((vocab_length, embedding.shape[1]))
         for word, index in tokenizer.word_index.items():
             try:
                 embedding_vector = embedding.get_word_vector(word)

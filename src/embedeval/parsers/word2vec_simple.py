@@ -8,7 +8,7 @@ NLP Embedding Evaluation Tool
 :license: MIT, see LICENSE for more details.
 """
 
-from typing import List
+from typing import List, Tuple
 from pathlib import Path
 
 import numpy as np
@@ -31,6 +31,10 @@ class SimpleWordEmbedding(WordEmbedding):
     @property
     def path(self) -> Path:
         return self._path
+
+    @property
+    def shape(self) -> Tuple[int, int]:
+        return (len(self.word_vectors), self.word_vectors.values()[0].size)
 
     def get_words(self) -> List[str]:
         return list(self.word_vectors.keys())
