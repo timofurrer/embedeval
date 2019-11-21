@@ -31,8 +31,9 @@ class OffenseDetectionTask(Task):  # type: ignore
 
     NAME = "offense-detection"
 
-    TRAIN_DATASET_PATH = Path(__file__).parent / "data" / "germeval2018.training.txt"
-    TEST_DATASET_PATH = Path(__file__).parent / "data" / "germeval2018.test.txt"
+    DATASET_PATH = Path(__file__).parent / "data" / "germeval-2018"
+    TRAIN_DATASET_PATH = DATASET_PATH / "train.txt"
+    TEST_DATASET_PATH = DATASET_PATH / "test.txt"
 
     TEXT_COLUMN_NAME = "tweet"
     SENTIMENT_COLUMN_NAME = "label"
