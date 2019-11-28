@@ -143,7 +143,8 @@ class OffenseDetectionTask(Task):  # type: ignore
         )
 
         # evaluate model
-        actual_loess, actual_accuracy, actual_f1_score = model.evaluate(
+        print(model)
+        actual_loss, actual_accuracy, actual_f1_score = model.evaluate(
             self.test_corpus,
             self.test_dataset[self.SENTIMENT_COLUMN_NAME],
             verbose=model_verbosity,
