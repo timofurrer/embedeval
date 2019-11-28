@@ -94,23 +94,22 @@ def create_tasks(ctx, param, task_names):
     help="The Task to evaluate on the given Embedding (can be specified multiple times)",
 )
 @click.argument(
-    "embedding_path", is_eager=True, type=click.Path(exists=True, dir_okay=False)
+    "path_to_embedding", is_eager=True, type=click.Path(exists=True, dir_okay=False)
 )
-def cli(is_debug_mode, embedding_path, tasks_path, tasks):
+def cli(is_debug_mode, path_to_embedding, tasks_path, tasks):
     """embedeval - NLP Embeddings Evaluation Tool
 
-    Evaluate and generate Reports for your
-    NLP Word Embeddings.
+    Evaluate and generate reports for your NLP Word Embeddings.
 
     The Word Embeddings need to be provided as word2vec keyed vectors in a file.
     The file can either be in a binary format (if the file has the .bin) extension
     or in plain text (if the file has the .vec) extension.
     """
     # load the Word Embedding
-    print(cf.italic(f"Loading embedding {embedding_path} ..."), flush=True, end=" ")
-    is_binary_format = embedding_path.suffix == ".bin"
+    print(cf.italic(f"Loading embedding {path_to_embedding} ..."), flush=True, end=" ")
+    is_binary_format = path_to_embedding.suffix == ".bin"
     try:
-        embedding = load_embedding(embedding_path, binary=is_binary_format)
+        embedding = load_embedding(path_to_embedding, binary=is_binary_format)
     except EmbedevalError as exc:
         print(cf.bold_firebrick("[FAILED]"), flush=True, end="\n\n")
         print(f"{cf.bold_firebrick('Error:')} {cf.firebrick(exc)}", file=sys.stderr)
@@ -122,6 +121,9 @@ def cli(is_debug_mode, embedding_path, tasks_path, tasks):
     logger.debug("Evaluating %d Tasks ...", len(tasks))
     for task_nbr, task in enumerate(tasks, start=1):
         logger.debug("Evaluating Task %s ...", task.NAME)
-        report = task.evaluate(embedding)
-        print(report, end="\n\n", flush=True)
+        try:
+            report = task.evaluate(embedding)
+            print(report, end="\n\n", flush=True)
+        except Exception as exc:
+            print(cf.firebrick(f"Failed to evaluate task: {exc}"), end="\n\n", flush=True)
         logger.debug("Evaluated %d of %d Tasks", task_nbr, len(tasks))
