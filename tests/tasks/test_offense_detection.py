@@ -8,7 +8,7 @@ NLP Embedding Evaluation Tool
 :license: MIT, see LICENSE for more details.
 """
 
-from embedeval.tasks.offense_detection import OffenseDetection
+from embedeval.tasks.offense_detection import OffenseDetectionTask
 from unittest.mock import MagicMock
 
 
