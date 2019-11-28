@@ -14,6 +14,7 @@ import warnings
 from pathlib import Path
 
 import click
+from click_default_group import DefaultGroup
 import colorful as cf
 
 from embedeval.logger import logger
@@ -66,8 +67,25 @@ def create_tasks(ctx, param, task_names):
     return tasks
 
 
-@click.command(name="embedeval")
+@click.group(
+    cls=DefaultGroup, name="embedeval", default="eval", default_if_no_args=False
+)
 @click.version_option()
+@click.help_option("--help", "-h")
+def cli():
+    """embedeval - NLP Embeddings Evaluation Tool
+
+    Evaluate and generate reports for your NLP Word Embeddings.
+
+    Use the ``eval`` command to evaluate a Word Embedding.
+    It's also the default command so use it like the following:
+
+    $ embedeval -t <your-task> embedding.vec
+    """
+    pass
+
+
+@cli.command(name="eval")
 @click.help_option("--help", "-h")
 @click.option(
     "--debug",
@@ -94,12 +112,13 @@ def create_tasks(ctx, param, task_names):
     help="The Task to evaluate on the given Embedding (can be specified multiple times)",
 )
 @click.argument(
-    "path_to_embedding", is_eager=True, type=click.Path(exists=True, dir_okay=False)
+    "path_to_embedding",
+    is_eager=True,
+    type=click.Path(exists=True, dir_okay=False),
+    callback=lambda _, __, p: Path(p),
 )
-def cli(is_debug_mode, path_to_embedding, tasks_path, tasks):
-    """embedeval - NLP Embeddings Evaluation Tool
-
-    Evaluate and generate reports for your NLP Word Embeddings.
+def eval_cli_command(is_debug_mode, path_to_embedding, tasks_path, tasks):
+    """Evaluate and generate reports for a NLP Word Embedding (default command)
 
     The Word Embeddings need to be provided as word2vec keyed vectors in a file.
     The file can either be in a binary format (if the file has the .bin) extension
@@ -125,5 +144,19 @@ def cli(is_debug_mode, path_to_embedding, tasks_path, tasks):
             report = task.evaluate(embedding)
             print(report, end="\n\n", flush=True)
         except Exception as exc:
-            print(cf.firebrick(f"Failed to evaluate task: {exc}"), end="\n\n", flush=True)
+            print(
+                cf.firebrick(f"Failed to evaluate task: {exc}"), end="\n\n", flush=True
+            )
         logger.debug("Evaluated %d of %d Tasks", task_nbr, len(tasks))
+
+
+@cli.command("tasks")
+@click.option(
+    "--tasks-path",
+    "-p",
+    is_eager=True,
+    type=click.Path(exists=True, file_okay=False, resolve_path=True),
+    help="Additional Path where Tasks are loaded from",
+)
+def tasks_cli_command():
+    """Show all available tasks"""
