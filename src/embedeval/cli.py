@@ -101,11 +101,16 @@ def cli(is_debug_mode, embedding_path, tasks_path, tasks):
 
     Evaluate and generate Reports for your
     NLP Word Embeddings.
+
+    The Word Embeddings need to be provided as word2vec keyed vectors in a file.
+    The file can either be in a binary format (if the file has the .bin) extension
+    or in plain text (if the file has the .vec) extension.
     """
     # load the Word Embedding
     print(cf.italic(f"Loading embedding {embedding_path} ..."), flush=True, end=" ")
+    is_binary_format = embedding_path.suffix == ".bin"
     try:
-        embedding = load_embedding(embedding_path, binary=False)
+        embedding = load_embedding(embedding_path, binary=is_binary_format)
     except EmbedevalError as exc:
         print(cf.bold_firebrick("[FAILED]"), flush=True, end="\n\n")
         print(f"{cf.bold_firebrick('Error:')} {cf.firebrick(exc)}", file=sys.stderr)
