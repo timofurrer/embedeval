@@ -44,6 +44,7 @@ CLASSIFIERS = [
 #: Holds the runtime requirements for the end user
 INSTALL_REQUIRES = [
     "click>=7",
+    "click-default-group",
     "colorful",
     "numpy",
     "pandas",
