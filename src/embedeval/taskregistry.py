@@ -63,7 +63,7 @@ class TaskRegistry:
     """Registry for all available Tasks"""
 
     def __init__(self) -> None:
-        self._tasks: Dict[str, Any] = {}
+        self.tasks: Dict[str, Any] = {}
 
     def register(self, task_cls) -> None:
         """Register the given Task in the Registry"""
@@ -75,14 +75,14 @@ class TaskRegistry:
                 f"which is used for discovery"
             )
 
-        if task_name in self._tasks:
+        if task_name in self.tasks:
             logger.debug(
                 "Not registering Task %s, "
                 "because one with the same name has already been registered",
                 task_name,
             )
         else:
-            self._tasks[task_name] = task_cls
+            self.tasks[task_name] = task_cls
             logger.debug("Registered Task %s", task_name)
 
     def create_task(self, name: str):
@@ -95,11 +95,11 @@ class TaskRegistry:
     def get_task_cls(self, name: str):
         """Get a registered Task class for the given Task name"""
         try:
-            return self._tasks[name]
+            return self.tasks[name]
         except KeyError:
             raise EmbedevalError(
                 f"No Task with name '{name}' registered. "
-                f"Choose one of: {', '.join(self._tasks.keys())}"
+                f"Choose one of: {', '.join(self.tasks.keys())}"
             )
 
 

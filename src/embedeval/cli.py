@@ -154,9 +154,18 @@ def eval_cli_command(is_debug_mode, path_to_embedding, tasks_path, tasks):
 @click.option(
     "--tasks-path",
     "-p",
-    is_eager=True,
     type=click.Path(exists=True, file_okay=False, resolve_path=True),
     help="Additional Path where Tasks are loaded from",
 )
-def tasks_cli_command():
+def tasks_cli_command(tasks_path):
     """Show all available tasks"""
+    # load all available tasks
+    tasks_paths = [__TASKS_DIR__]
+    if tasks_path:
+        tasks_paths += tasks_path
+    load_tasks(tasks_paths)
+
+    # nicely print all available loaded tasks
+    print("The following tasks are available for evaluation:")
+    for task_name in sorted(task_registry.tasks):
+        print(f"    * {cf.bold(task_name)}")
