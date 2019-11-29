@@ -169,3 +169,21 @@ def tasks_cli_command(tasks_path):
     print("The following tasks are available for evaluation:")
     for task_name in sorted(task_registry.tasks):
         print(f"    * {cf.bold(task_name)}")
+
+
+@cli.command("create-task")
+@click.option(
+    "--task-path",
+    "-p",
+    type=click.Path(exists=True, file_okay=False, resolve_path=True),
+    help="Target directory for the new Task",
+)
+@click.option(
+    "--based-on",
+    "-b",
+    help="The name from a built-in Task of which the new Task should be based on",
+)
+@click.argument("new-task-name")
+def create_task_cli_command(task_path, based_on, new_task_name):
+    """Create a new Task"""
+    pass
