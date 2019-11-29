@@ -9,20 +9,34 @@ NLP Embedding Evaluation Tool
 """
 
 import re
+import io
+import sys
+import contextlib
 from pathlib import Path
 
 import numpy as np
-from keras import backend as K
-from keras.layers import Dense, Flatten
-from keras.layers.embeddings import Embedding
-from keras.models import Sequential
-from keras.preprocessing.sequence import pad_sequences
-from keras.preprocessing.text import Tokenizer
-import pandas as pd
-from nltk.tokenize import word_tokenize
 
-from embedeval.logger import get_component_logger
-from embedeval.task import Task, TaskReport
+# NOTE(TF): suppress stupid "Using TensorFlow backend." emitted by keras.
+keras_import_log = io.StringIO()
+with contextlib.redirect_stderr(keras_import_log):
+    try:
+        from keras import backend as K
+    except Exception:
+        print(keras_import_log.read(), file=sys.stderr)
+        raise
+
+
+from keras.layers import Dense, Flatten  # noqa
+from keras.layers.embeddings import Embedding  # noqa
+from keras.models import Sequential  # noqa
+from keras.preprocessing.sequence import pad_sequences  # noqa
+from keras.preprocessing.text import Tokenizer  # noqa
+
+import pandas as pd  # noqa
+from nltk.tokenize import word_tokenize  # noqa
+
+from embedeval.logger import get_component_logger  # noqa
+from embedeval.task import Task, TaskReport  # noqa
 
 logger = get_component_logger("offense_detection")
 
