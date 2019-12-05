@@ -1,0 +1,42 @@
+"""
+embedeval Task
+~~~~~~~~~~~~~~
+
+A Task for the embedeval tool.
+
+:license: MIT, see LICENSE for more details.
+"""
+
+from embedeval.task import Task, TaskReport
+from embedeval.logger import get_component_logger
+
+logger = get_component_logger("{task_module_name}_task")
+
+
+class MyTask(Task):
+    """{task_name} Task for the embedeval tool
+
+    TODO: Add some more description for the Task
+    """
+
+    NAME = "{task_name}"
+
+    def evaluate(self, embedding) -> TaskReport:
+        # TODO: define the inputs for the Task
+
+        # TODO: define the goal for the odd one out function
+
+        # TODO: define the title for the report
+        report_title = ""
+
+        # TODO: evaluate the Task
+
+        # TODO: set the report outcome
+        report_outcome = False
+
+        # TODO: create report body
+        report_body = ""
+
+        return TaskReport(
+            self.NAME, outcome=True, title=report_outcome, body=report_body,
+        )

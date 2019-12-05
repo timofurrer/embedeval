@@ -109,6 +109,7 @@ class OffenseDetectionTask(Task):  # type: ignore
 
     def _calculate_sentence_length(self, corpus):
         from nltk.tokenize import word_tokenize  # noqa
+
         # NOTE(TF): lazy import keras, because it takes forever to import
         #           and we don't want to do that just to import this task module.
 
