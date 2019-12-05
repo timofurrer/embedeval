@@ -22,6 +22,9 @@ embedeval is available as `pip` package:
 python -m pip install embedeval
 ```
 
+NOTE: it might not be installable as of today using pip with PyPI.
+However, installing from source will work. Use `.` instead of `embedeval` in the pip command.
+
 # Getting started
 
 Run the `word-analogy` Task on your Word Embedding:
