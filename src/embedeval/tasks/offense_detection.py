@@ -9,31 +9,10 @@ NLP Embedding Evaluation Tool
 """
 
 import re
-import io
-import sys
-import contextlib
 from pathlib import Path
 
 import numpy as np
-
-# NOTE(TF): suppress stupid "Using TensorFlow backend." emitted by keras.
-keras_import_log = io.StringIO()
-with contextlib.redirect_stderr(keras_import_log):
-    try:
-        from keras import backend as K
-    except Exception:
-        print(keras_import_log.read(), file=sys.stderr)
-        raise
-
-
-from keras.layers import Dense, Flatten  # noqa
-from keras.layers.embeddings import Embedding  # noqa
-from keras.models import Sequential  # noqa
-from keras.preprocessing.sequence import pad_sequences  # noqa
-from keras.preprocessing.text import Tokenizer  # noqa
-
-import pandas as pd  # noqa
-from nltk.tokenize import word_tokenize  # noqa
+import pandas as pd
 
 from embedeval.logger import get_component_logger  # noqa
 from embedeval.task import Task, TaskReport  # noqa
@@ -43,6 +22,8 @@ logger = get_component_logger("offense_detection")
 
 def recall_metric(y_true, y_pred):
     """Calculate the Recall from a keras batch"""
+    from keras import backend as K
+
     true_positives = K.sum(K.round(K.clip(y_true * y_pred, 0, 1)))
     possible_positives = K.sum(K.round(K.clip(y_true, 0, 1)))
     recall = true_positives / (possible_positives + K.epsilon())
@@ -51,6 +32,8 @@ def recall_metric(y_true, y_pred):
 
 def precision_metric(y_true, y_pred):
     """Calculate the Precision from a keras batch"""
+    from keras import backend as K
+
     true_positives = K.sum(K.round(K.clip(y_true * y_pred, 0, 1)))
     predicted_positives = K.sum(K.round(K.clip(y_pred, 0, 1)))
     precision = true_positives / (predicted_positives + K.epsilon())
@@ -59,6 +42,8 @@ def precision_metric(y_true, y_pred):
 
 def f1_metric(y_true, y_pred):
     """Calculate the F1 score from a keras batch"""
+    from keras import backend as K
+
     precision = precision_metric(y_true, y_pred)
     recall = recall_metric(y_true, y_pred)
     return 2 * ((precision * recall) / (precision + recall + K.epsilon()))
@@ -114,11 +99,19 @@ class OffenseDetectionTask(Task):  # type: ignore
         return df
 
     def _create_tokenizer(self, corpus):
+        # NOTE(TF): lazy import keras, because it takes forever to import
+        #           and we don't want to do that just to import this task module.
+        from keras.preprocessing.text import Tokenizer  # noqa
+
         word_tokenizer = Tokenizer()
         word_tokenizer.fit_on_texts(corpus)
         return word_tokenizer
 
     def _calculate_sentence_length(self, corpus):
+        from nltk.tokenize import word_tokenize  # noqa
+        # NOTE(TF): lazy import keras, because it takes forever to import
+        #           and we don't want to do that just to import this task module.
+
         logger.debug("Calculating corpus sentence length")
         word_count = lambda sentence: len(word_tokenize(sentence))  # noqa
         longest_sentence = max(corpus, key=word_count)
@@ -128,6 +121,10 @@ class OffenseDetectionTask(Task):  # type: ignore
         return sentence_length
 
     def _prepare_dataset_corpus(self, corpus, tokenizer, sentence_length):
+        # NOTE(TF): lazy import keras, because it takes forever to import
+        #           and we don't want to do that just to import this task module.
+        from keras.preprocessing.sequence import pad_sequences  # noqa
+
         text = tokenizer.texts_to_sequences(corpus)
         padded_text = pad_sequences(text, sentence_length, padding="post")
         return padded_text
@@ -203,6 +200,12 @@ The actual accuracy was {actual_accuracy:.2} and F1 score was {actual_f1_score:.
         )
 
     def _create_cnn_model(self, embedding, tokenizer, sentence_length):
+        # NOTE(TF): lazy import keras, because it takes forever to import
+        #           and we don't want to do that just to import this task module.
+        from keras.layers import Dense, Flatten  # noqa
+        from keras.layers.embeddings import Embedding  # noqa
+        from keras.models import Sequential  # noqa
+
         embedding_matrix = self._create_embedding_matrix(embedding, tokenizer)
 
         model = Sequential()
