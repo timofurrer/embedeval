@@ -8,19 +8,22 @@ NLP Embedding Evaluation Tool
 :license: MIT, see LICENSE for more details.
 """
 
-import sys
+import inspect
 import logging
+import re
+import sys
 import warnings
 from pathlib import Path
 
 import click
-from click_default_group import DefaultGroup
 import colorful as cf
+from click_default_group import DefaultGroup
 
+from embedeval.errors import EmbedevalError
 from embedeval.logger import logger
 from embedeval.parsers.word2vec_gensim import load_embedding
-from embedeval.taskregistry import registry as task_registry, load_tasks
-from embedeval.errors import EmbedevalError
+from embedeval.taskregistry import load_tasks
+from embedeval.taskregistry import registry as task_registry
 
 logging.basicConfig(
     level=logging.CRITICAL, format="%(asctime)s - %(name)s [%(levelname)s]: %(message)s"
@@ -173,10 +176,28 @@ def tasks_cli_command(tasks_path):
 
 @cli.command("create-task")
 @click.option(
-    "--task-path",
-    "-p",
+    "--debug",
+    "-d",
+    "is_debug_mode",
+    is_flag=True,
+    is_eager=True,
+    callback=enable_debug_mode,
+    help="Enable debug mode",
+)
+@click.option(
+    "--target-task-path",
+    "-t",
+    default=Path().absolute(),
     type=click.Path(exists=True, file_okay=False, resolve_path=True),
-    help="Target directory for the new Task",
+    callback=lambda _, __, p: Path(p),
+    help="Target directory for the new Task (default: $PWD)",
+)
+@click.option(
+    "--tasks-path",
+    "-p",
+    is_eager=True,
+    type=click.Path(exists=True, file_okay=False, resolve_path=True),
+    help="Additional Path where Tasks are loaded from. Those can be used to base on.",
 )
 @click.option(
     "--based-on",
@@ -184,6 +205,66 @@ def tasks_cli_command(tasks_path):
     help="The name from a built-in Task of which the new Task should be based on",
 )
 @click.argument("new-task-name")
-def create_task_cli_command(task_path, based_on, new_task_name):
-    """Create a new Task"""
-    pass
+def create_task_cli_command(
+    is_debug_mode, target_task_path, tasks_path, based_on, new_task_name
+):
+    """Create a new Task for Word Embedding evaluations
+
+    \b
+    embedeval ships with a skeleton Task which is used by default.
+    Using the ``--based-on`` option changes that skeleton Task to the given Task.
+
+    \b
+    Examples:
+
+    \b
+        # create a new Task named "rating-analysis" based on the default skeleton Task
+        $ embedeval create-task rating-analysis
+
+    \b
+        # create a new Task named "rating-analysis" in the directory "tasks" reletive to the execution
+        $ embedeval create-task rating-analysis --target-task-path tasks/
+
+    \b
+        # create a new Task named "rating-analysis" based on the built-in "offense-detection" Task
+        $ embedeval create-task rating-analysis --based-on offense-detection
+
+    \b
+        # create a new Task named "rating-analysis-v2"
+        # based on a custom "rating-analysis" Task in the "tasks" directory
+        $ embedeval create-task rating-analysis-v2 --based-on rating-analysis --tasks-path tasks/
+    """  # noqa
+    # generate the Python module name for the new Task
+    task_module_name = re.sub(r"[^A-Za-z0-9_]", lambda c: "_", new_task_name)
+    target_taskfile_path = target_task_path / (task_module_name + ".py")
+
+    if based_on is None:  # based on default Skeleton Task
+        base_task_path = __TASKS_DIR__ / "skeleton.py.in"
+        with base_task_path.open("r") as skeleton_file:
+            target_task_contents = skeleton_file.read().format(
+                task_name=new_task_name, task_module_name=task_module_name,
+            )
+    else:
+        # load all available tasks
+        tasks_paths = [__TASKS_DIR__]
+        if tasks_path:
+            tasks_paths += tasks_path
+        load_tasks(tasks_paths)
+
+        base_task_cls = next(
+            (x for x in task_registry.tasks.values() if x.NAME == based_on), None
+        )
+
+        if base_task_cls is None:
+            print(f"Error: Task {based_on} is not known to embedeval", file=sys.stderr)
+            raise click.Abort()
+
+        base_task_path = Path(inspect.getsourcefile(base_task_cls))
+        with base_task_path.open("r") as based_on_file:
+            target_task_contents = based_on_file.read()
+
+    with target_taskfile_path.open("w") as target_taskfile:
+        target_taskfile.write(target_task_contents)
+
+    print(f"Created the new Task '{new_task_name}' based on {base_task_path}")
+    print(f"Make sure to edit and finalize the new Task at {target_taskfile_path}")

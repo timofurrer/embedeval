@@ -9,8 +9,9 @@ NLP Embedding Evaluation Tool
 """
 
 import importlib.util
+import sys
 from pathlib import Path
-from typing import List, Dict, Any
+from typing import Any, Dict, List
 
 from embedeval.errors import EmbedevalError
 from embedeval.logger import get_component_logger
@@ -43,12 +44,15 @@ def load_module(path: Path) -> None:
     """Load the given module into the Python runtime"""
     module_name = path.stem
     try:
-        spec = importlib.util.spec_from_file_location(module_name, str(path))
+        spec = importlib.util.spec_from_file_location(module_name, path)
         module = importlib.util.module_from_spec(spec)
         if spec.loader is None:
             raise EmbedevalError(
                 f"No loader for module {module_name} found"
             )  # pragma: no cover
+
+        # NOTE(TF): add loaded module to ``sys.modules`` so that ``inspect`` will work correctly.
+        sys.modules[module_name] = module
 
         spec.loader.exec_module(module)  # type: ignore
     except Exception as exc:
