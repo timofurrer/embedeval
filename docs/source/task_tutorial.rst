@@ -8,6 +8,63 @@ with respect to certain measures given certain baselines.
 The Task API can be found in detail in the :ref:`Task API <task_api>`
 section of this documentation.
 
+There exists two ways of creating a new Taks.
+The most simplest one is to create one using the ``embedeval create-task`` command.
+The other one is from scratch and can be seen as a reference for the details of a
+Task Implementation.
+
+A new Task from the CLI
+~~~~~~~~~~~~~~~~~~~~~~~
+
+The following section describes how to create a new Task
+using the ``embedeval`` command line interface.
+
+Task from the built-in skeleton
+-------------------------------
+
+``embedeval`` comes with a built-in skeleton Task which can be used as
+a base for a new Task:
+
+.. code-block:: bash
+
+   embedeval create-task word-similarity
+
+This command will create a new Task called ``word-similarity``
+based on the skeleton Task and placed in a Python module
+called ``word_similarity.py`` in the current directory.
+
+Often that's not the place the module should be placed,
+thus with the ``--target-task-path`` option a target
+directory for the new Task can be specified:
+
+.. code-block:: bash
+
+   embedeval create-task word-similarity --target-task-path tasks/
+
+The skeleton doesn't provide much, therefore the new Task can be
+based on another Task known to ``embedeval`` using
+the ``--based-on`` option:
+
+.. code-block:: bash
+
+   embedeval create-task word-similarity --based-on odd-one-out
+
+The above command will create the Task based on the ``embedeval``
+``odd-one-out`` built-in Taks.
+
+In case the Task should be created based on a non built-in Task
+the ``--tasks-path`` option can be used:
+
+.. code-block:: bash
+
+   embedeval create-task word-similarity-v2 \
+      --based-on word-similarity \
+      --tasks-path tasks/ \
+
+
+A new Task from scratch
+~~~~~~~~~~~~~~~~~~~~~~~
+
 The following sections will guide through the steps which need
 to be done to implement a Task and how to do an evaluation with them.
 
