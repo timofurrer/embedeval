@@ -13,6 +13,8 @@ The most simplest one is to create one using the ``embedeval create-task`` comma
 The other one is from scratch and can be seen as a reference for the details of a
 Task Implementation.
 
+.. _new_task_cli:
+
 A new Task from the CLI
 ~~~~~~~~~~~~~~~~~~~~~~~
 
