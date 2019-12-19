@@ -51,6 +51,8 @@ INSTALL_REQUIRES = [
     "keras",
     "tensorflow",
     "nltk",
+    # somehow botocore which is a transitive dependency has some requirements not correctly pinned.
+    "python-dateutil<2.8.1"
 ]
 #: Holds runtime requirements and development requirements
 EXTRAS_REQUIRES = {
