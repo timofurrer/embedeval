@@ -1,6 +1,6 @@
 # NLP Embeddings Evaluation Tool
 
-[![PyPI License](https://img.shields.io/pypi/l/timofurrer.svg)](https://github.com/timofurrer/embedeval/blob/master/LICENSE)
+[![PyPI License](https://img.shields.io/pypi/l/embedeval.svg)](https://github.com/timofurrer/embedeval/blob/master/LICENSE)
 <br>
 [![Actions Status](https://github.com/timofurrer/embedeval/workflows/CI/badge.svg)](https://github.com/timofurrer/embedeval/actions)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/ambv/black)
