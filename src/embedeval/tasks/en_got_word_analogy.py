@@ -19,7 +19,7 @@ logger = get_component_logger("word_analogy_task")
 class WordAnalogyTask(Task):  # type: ignore
     """Represents a Word Analogy Task"""
 
-    NAME = "word-analogy"
+    NAME = "en-got-word-analogy"
 
     def evaluate(self, embedding) -> TaskReport:
         # define the inputs for the Task

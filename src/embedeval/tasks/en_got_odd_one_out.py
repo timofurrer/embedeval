@@ -17,7 +17,7 @@ logger = get_component_logger("odd_one_out_task")
 class OddOneOutTask(Task):  # type: ignore
     """Represents an Odd One Out Task"""
 
-    NAME = "odd-one-out"
+    NAME = "en-got-odd-one-out"
 
     def evaluate(self, embedding) -> TaskReport:
         # define the inputs for the Task

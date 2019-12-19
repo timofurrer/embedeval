@@ -52,7 +52,7 @@ def f1_metric(y_true, y_pred):
 class OffenseDetectionTask(Task):  # type: ignore
     """Represents an Offense detection Task"""
 
-    NAME = "offense-detection"
+    NAME = "de-offense-detection"
 
     DATASET_PATH = Path(__file__).parent / "data" / "germeval-2018"
     TRAIN_DATASET_PATH = DATASET_PATH / "train.txt"
