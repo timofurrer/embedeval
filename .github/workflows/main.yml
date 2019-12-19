@@ -45,15 +45,6 @@ jobs:
           coverage combine
           coverage report
           coverage xml
-      #- name: Upload coverage to Codecov
-        ## codecov only runs on Linux
-        #if: startsWith(matrix.os, 'ubuntu-')
-        #uses: codecov/codecov-action@v1.0.0
-        #with:
-          #token: ${{ secrets.CODECOV_TOKEN }}
-          #file: ./coverage.xml
-          #flags: unittests
-          #name: codecov-umbrella
 
   docs:
     runs-on: ubuntu-latest
@@ -71,3 +62,36 @@ jobs:
         run: |
           sphinx-build -W -b html -d doctrees docs/source docs/build/html
           sphinx-build -W -b doctest -d doctrees docs/source docs/build/html
+
+  publish:
+    needs: [build, docs]
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Set up Python 3.7
+        if: startsWith(github.event.ref, 'refs/tags')
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.7
+      - name: Build Package
+        if: startsWith(github.event.ref, 'refs/tags')
+        run: |
+          python -m pip install --upgrade pip setuptools wheel
+          python setup.py sdist bdist_wheel --universal
+      - name: Publish Package on PyPI
+        if: startsWith(github.event.ref, 'refs/tags')
+        uses: pypa/gh-action-pypi-publish@master
+        with:
+          user: __token__
+          password: ${{ secrets.pypi_token }}
+      - name: Create Release on GitHub
+        if: startsWith(github.event.ref, 'refs/tags')
+        uses: actions/create-release@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: true
