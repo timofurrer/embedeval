@@ -10,7 +10,7 @@ NLP Embedding Evaluation Tool
 
 import pytest
 
-from embedeval.tasks.offense_detection import OffenseDetectionTask
+from embedeval.tasks.de_offense_detection import OffenseDetectionTask
 
 
 @pytest.fixture(name="offense_detection_task_setup")
@@ -20,13 +20,13 @@ def create_offense_detection_task(mocker):
     The OffenseDetectionTask has some mocked behavior
     to allow unit testing.
     """
-    mocker.patch("embedeval.tasks.offense_detection.OffenseDetectionTask._load_dataset")
+    mocker.patch("embedeval.tasks.de_offense_detection.OffenseDetectionTask._load_dataset")
     mocker.patch(
-        "embedeval.tasks.offense_detection.OffenseDetectionTask._calculate_sentence_length"
+        "embedeval.tasks.de_offense_detection.OffenseDetectionTask._calculate_sentence_length"
     )  # noqa
     mocker.patch("pandas.concat")
     create_cnn_model_mock = mocker.patch(
-        "embedeval.tasks.offense_detection.OffenseDetectionTask._create_cnn_model"
+        "embedeval.tasks.de_offense_detection.OffenseDetectionTask._create_cnn_model"
     )
     model_mock = mocker.MagicMock(name="CNN model")
     create_cnn_model_mock.return_value = model_mock

@@ -8,7 +8,7 @@ NLP Embedding Evaluation Tool
 :license: MIT, see LICENSE for more details.
 """
 
-from embedeval.tasks.word_analogy import WordAnalogyTask
+from embedeval.tasks.en_got_word_analogy import WordAnalogyTask
 from unittest.mock import MagicMock
 
 

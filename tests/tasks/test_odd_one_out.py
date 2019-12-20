@@ -8,7 +8,7 @@ NLP Embedding Evaluation Tool
 :license: MIT, see LICENSE for more details.
 """
 
-from embedeval.tasks.odd_one_out import OddOneOutTask
+from embedeval.tasks.en_got_odd_one_out import OddOneOutTask
 from unittest.mock import MagicMock
 
 
