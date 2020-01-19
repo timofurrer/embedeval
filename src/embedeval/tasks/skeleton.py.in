@@ -38,5 +38,5 @@ class MyTask(Task):
         report_body = ""
 
         return TaskReport(
-            self.NAME, outcome=True, title=report_outcome, body=report_body,
+            self.NAME, outcome=report_outcome, title=report_title, body=report_body,
         )
