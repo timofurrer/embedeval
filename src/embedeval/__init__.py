@@ -9,7 +9,7 @@ NLP Embedding Evaluation Tool
 """
 
 __license__ = "MIT"
-__version__ = "1.0.3"
+__version__ = "1.0.4"
 
 
 # Expose useful objects on package level
