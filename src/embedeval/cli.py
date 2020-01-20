@@ -191,14 +191,16 @@ def tasks_cli_command(additional_tasks_path):
     "-t",
     default=Path().absolute(),
     type=click.Path(exists=True, file_okay=False, resolve_path=True),
-    callback=lambda _, __, p: Path(p),
+    callback=lambda _, __, p: Path(p) if p else p,
     help="Target directory for the new Task (default: $PWD)",
 )
 @click.option(
     "--tasks-path",
     "-p",
+    "additional_tasks_path",
     is_eager=True,
     type=click.Path(exists=True, file_okay=False, resolve_path=True),
+    callback=lambda _, __, p: Path(p) if p else p,
     help="Additional Path where Tasks are loaded from. Those can be used to base on.",
 )
 @click.option(
@@ -208,7 +210,7 @@ def tasks_cli_command(additional_tasks_path):
 )
 @click.argument("new-task-name")
 def create_task_cli_command(
-    is_debug_mode, target_task_path, tasks_path, based_on, new_task_name
+    is_debug_mode, target_task_path, additional_tasks_path, based_on, new_task_name
 ):
     """Create a new Task for Word Embedding evaluations
 
@@ -249,8 +251,8 @@ def create_task_cli_command(
     else:
         # load all available tasks
         tasks_paths = [__TASKS_DIR__]
-        if tasks_path:
-            tasks_paths += tasks_path
+        if additional_tasks_path:
+            tasks_paths.append(additional_tasks_path)
         load_tasks(tasks_paths)
 
         base_task_cls = next(
