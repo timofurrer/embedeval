@@ -24,7 +24,7 @@ class MyTask(Task):
     def evaluate(self, embedding) -> TaskReport:
         # TODO: define the inputs for the Task
 
-        # TODO: define the goal for the odd one out function
+        # TODO: define the goal for the Task function
 
         # TODO: define the title for the report
         report_title = ""
